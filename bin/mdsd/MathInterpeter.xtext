@@ -1,0 +1,26 @@
+grammar mdsd.MathInterpeter with org.eclipse.xtext.common.Terminals
+
+generate mathInterpeter "http://www.MathInterpeter.mdsd"
+
+MathExp:
+	'result' 'is' exp=Exp
+;
+
+
+Exp: PlusMinus;
+
+PlusMinus returns Exp:	MultDiv (({Plus.left=current} '+' | {Minus.left=current} '-') 		right=MultDiv	)*;
+
+MultDiv returns Exp:	Primary (({Mult.left=current} '*' |{Div.left=current} '/') right=Primary)*;
+
+Primary:
+	Number | Parenthesis
+;
+
+Parenthesis:
+	'(' exp=Exp ')'
+;
+
+Number:
+	value=INT
+;
